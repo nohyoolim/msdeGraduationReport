@@ -16,8 +16,11 @@ mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
-ser = serial.Serial('COM4',9600)    #아두이노와 시리얼 통신을 위한 객체 생성
+#ser = serial.Serial('COM4',9600)    #아두이노와 시리얼 통신을 위한 객체 생성
 time.sleep(2)   #야두이노와 연결 때까지 2초 대기
+
+cam1_x = 0
+cam2_x = 0
 
 def equation(alpha):
     return cam1_x/math.cos(math.radians(30) + alpha) - cam2_x/math.cos(alpha)
@@ -116,7 +119,7 @@ def process_dual_camera(camera_id,theta):   #투캠 함수, theta는 웹캠 기�
 
     cap.release()
     cv2.destroyAllWindows()
-    ser.close() #시리얼 통신 종료
+    #ser.close() #시리얼 통신 종료
     
 def select_dual_cameras():  #투캠 선택 함수
     global vec1
@@ -150,8 +153,6 @@ def VectortoAngle(vec1, vec2):      #각도를 생성하는 함수
     up_rot3 = rotate_m1_r@up_rot
     up_rotate = np.transpose(up_rot3)
     
-    
-    
     #down_proj = np.array([down_rotate[0],0,down_rotate[2]])
     mr4 = math.acos(np.dot(up_rotate,down)/(np.linalg.norm(up_rotate)*np.linalg.norm(down)));
                                 
@@ -164,8 +165,8 @@ def VectortoAngle(vec1, vec2):      #각도를 생성하는 함수
 
     print(int(m1),int(m2),int(m3),int(m4),90,90)   #int(m5),int(m6)
     #아두이노에 행렬 넘겨주기
-    ser.write((str(m1)+'/'+str(m2)+'/'+str(m3)+'/'+str(m4)+'/'+"90"+'/'+"90"+k).encode())        #ser.write(k.encode())
-    time.sleep(2)
+    #ser.write((str(m1)+'/'+str(m2)+'/'+str(m3)+'/'+str(m4)+'/'+"90"+'/'+"90"+k).encode())        #ser.write(k.encode())
+    #time.sleep(2)
     
 
 
